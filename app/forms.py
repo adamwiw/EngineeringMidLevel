@@ -2,7 +2,7 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField, TextAreaField, SelectField, DateField, IntegerField
 from wtforms.validators import ValidationError, DataRequired, Email, EqualTo
 from app.models import User, Request, Client, Area
-from flask.ext.admin.form.widgets import DatePickerWidget
+from flask_admin.form.widgets import DatePickerWidget
 
 class LoginForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired()])

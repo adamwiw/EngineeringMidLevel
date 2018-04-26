@@ -4,6 +4,7 @@ from app import app, db
 from app.models import User, Request
 from app.forms import LoginForm, RequestForm
 from werkzeug.urls import url_parse
+from sqlalchemy import exc
 
 @app.route('/')
 @app.route('/index')
@@ -45,7 +46,11 @@ def create():
             target_date=form.target_date.data, product_area=form.product_area.data,
             author=current_user)
         db.session.add(request)
-        db.session.commit()
+        try:
+            db.session.commit()
+        except exc.IntegrityError:
+            flash('Flexible priority not implemented yet.')
+            return render_template('create.html', title='Create Request', form=form)
         flash('Your request has been added')
         return redirect(url_for('index'))
     return render_template('create.html', title='Create Request', form=form)

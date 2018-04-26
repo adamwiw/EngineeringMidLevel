@@ -17,38 +17,29 @@ class User(UserMixin, db.Model):
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
 
-class Client(Enum):
+class ViewEnum(Enum):
+    @classmethod
+    def choices(cls):
+        return [(choice, choice.value) for choice in cls]
+
+    @classmethod
+    def coerce(cls, item):
+        return cls(item) if not isinstance(item, cls) else item
+
+    def __str__(self):
+        return self.value
+
+class Client(ViewEnum):
     CLIENT_A = 'Client A'
     CLIENT_B = 'Client B'
     CLIENT_C = 'Client C'
 
-    @classmethod
-    def choices(cls):
-        return [(choice, choice.value) for choice in cls]
 
-    @classmethod
-    def coerce(cls, item):
-        return cls(item) if not isinstance(item, cls) else item
-
-    def __str__(self):
-        return self.value
-
-class Area(Enum):
+class Area(ViewEnum):
     POLICIES = 'Policies'
     BILLING = 'Billing'
     CLAIMS = 'Claims'
     REPORTS = 'Reports'
-
-    @classmethod
-    def choices(cls):
-        return [(choice, choice.value) for choice in cls]
-
-    @classmethod
-    def coerce(cls, item):
-        return cls(item) if not isinstance(item, cls) else item
-
-    def __str__(self):
-        return self.value
 
 class Request(db.Model):
     id = db.Column(db.Integer, db.Sequence('id', start=0, increment=1), index=True)
