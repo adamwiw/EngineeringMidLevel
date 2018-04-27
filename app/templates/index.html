@@ -1,9 +1,5 @@
 {% extends "base.html" %}
-
 {% block app_content %}
     <h1>Hi, {{ current_user.username }}!</h1>
-    {% for request in requests %}
-        {% include '_request.html' %}
-    {% endfor %}
+    {% include '_request.html' %}
 {% endblock %}
-

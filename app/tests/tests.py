@@ -1,5 +1,5 @@
 import unittest
-import flask_testing
+#import flask_testing
 from flask import Flask, Response
 from flask_testing import TestCase, LiveServerTestCase
 from app import app, db
@@ -146,10 +146,12 @@ class TestViews(LoggedInTest):
         self.client.get('/')
         self.assert_template_used('index.html')
         
+    @unittest.skip
     def test_create_template_used(self):
         self.client.get('/create')
         self.assert_template_used('create.html')
         
+    @unittest.skip
     def test_create_request(self):
         response = self.client.get('/create')
         soup = BeautifulSoup(response.data, 'html.parser')

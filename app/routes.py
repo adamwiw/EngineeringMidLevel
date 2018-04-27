@@ -1,4 +1,4 @@
-from flask import render_template, redirect, url_for, flash, request
+from flask import render_template, redirect, url_for, flash, request, jsonify
 from flask_login import current_user, login_user, logout_user, login_required
 from app import app, db
 from app.models import User, Request
@@ -28,17 +28,17 @@ def login():
         next_page = request.args.get('next')
         if not next_page or url_parse(next_page).netloc != '':
             next_page = url_for('index')
-        return redirect(next_page)
+        return redirect(url_for('index'))
     return render_template('login.html', title='Sign In', form=form)
 
 @app.route('/logout')
 def logout():
     logout_user()
     return redirect(url_for('index'))
-
-@app.route('/create', methods=['GET', 'POST'])
+    
+@app.route('/req', methods=['GET', 'POST'])
 @login_required
-def create():
+def req():
     form = RequestForm()
     if form.validate_on_submit():
         request = Request(title=form.title.data, description=form.description.data, 
@@ -49,9 +49,8 @@ def create():
         try:
             db.session.commit()
         except exc.IntegrityError:
-            flash('Flexible priority not implemented yet.')
-            return render_template('create.html', title='Create Request', form=form)
-        flash('Your request has been added')
-        return redirect(url_for('index'))
-    return render_template('create.html', title='Create Request', form=form)
+            return jsonify({'Success': 0})
+        return jsonify({'Success': 1})
+    requests = Request.query.filter_by(author=current_user).all()
+    return jsonify([ request.as_dict() for request in requests])
 

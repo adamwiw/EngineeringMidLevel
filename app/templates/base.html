@@ -1,7 +1,11 @@
 {% extends 'bootstrap/base.html' %}
 
-{% block title %}
-    {% if title %}{{ title }}{% else %}Welcome{% endif %}
+{% block title %}{% if title %}{{ title }}{% else %}Welcome{% endif %}{% endblock %}
+
+{% block scripts %}
+    {{super()}}
+    <script src="//cdnjs.cloudflare.com/ajax/libs/knockout/3.4.2/knockout-min.js"></script>
+    <script src="{{url_for('.static', filename='app.js')}}"></script>
 {% endblock %}
 
 {% block navbar %}
@@ -19,7 +23,7 @@
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 {% if not current_user.is_anonymous %}
                 <ul class="nav navbar-nav">
-                    <li><a href="{{ url_for('create') }}">Create Request</a></li>
+                    <li><a href="{{ url_for('req') }}">Create Request</a></li>
                 </ul>
                 {% endif %}
                 <ul class="nav navbar-nav navbar-right">

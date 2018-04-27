@@ -34,7 +34,6 @@ class Client(ViewEnum):
     CLIENT_B = 'Client B'
     CLIENT_C = 'Client C'
 
-
 class Area(ViewEnum):
     POLICIES = 'Policies'
     BILLING = 'Billing'
@@ -51,6 +50,9 @@ class Request(db.Model):
     target_date = db.Column(db.DateTime, index=True)
     product_area = db.Column(db.Enum(Area), index=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    
+    def as_dict(self):
+        return {c.name: str(getattr(self, c.name)) for c in self.__table__.columns}
 
 @login.user_loader
 def load_user(id):
