@@ -1,5 +1,5 @@
 import unittest
-#import flask_testing
+import flask_testing
 from flask import Flask, Response
 from flask_testing import TestCase, LiveServerTestCase
 from app import app, db
@@ -7,17 +7,14 @@ from datetime import datetime
 import os
 from urllib.request import urlopen
 from app.models import User, Request, Area, Client
-from app.config import TestConfig
 from sqlalchemy import exc
 from bs4 import BeautifulSoup
 import random
 import string
+import json
 
 class ServerTest(LiveServerTestCase):
     def create_app(self):
-        app.config.from_object(TestConfig)
-        app.config['LIVESERVER_PORT'] = 0
-        app.config['TESTING'] = True
         return app
 
     def test_server_is_up_and_running(self):
@@ -26,8 +23,6 @@ class ServerTest(LiveServerTestCase):
         
 class BaseTest(TestCase):
     def create_app(self):
-        app.config.from_object(TestConfig)
-        app.config['TESTING'] = True
         return app
         
     def setUp(self):
@@ -145,15 +140,9 @@ class TestViews(LoggedInTest):
     def test_index_template_used(self):
         self.client.get('/')
         self.assert_template_used('index.html')
-        
-    @unittest.skip
-    def test_create_template_used(self):
-        self.client.get('/create')
-        self.assert_template_used('create.html')
-        
-    @unittest.skip
+   
     def test_create_request(self):
-        response = self.client.get('/create')
+        response = self.client.get('/index')
         soup = BeautifulSoup(response.data, 'html.parser')
         csrf = soup.find('input', {'id' : 'csrf_token'}).get('value')
         title = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(16))
@@ -166,8 +155,27 @@ class TestViews(LoggedInTest):
             target_date=datetime.now().strftime('%Y-%m-%d'),
             product_area='Billing'
         )
-        response = self.client.post('/create', data=data, follow_redirects=True)
-        assert Request.query.filter_by(title=title).first() is not None
+        response = self.client.post('/req', data=data, follow_redirects=True)
+        assert json.loads(response.data.decode())['success']
+        
+    def test_create_duplicate_request(self):
+        response = self.client.get('/index')
+        soup = BeautifulSoup(response.data, 'html.parser')
+        csrf = soup.find('input', {'id' : 'csrf_token'}).get('value')
+        title = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(16))
+        data = dict(
+            csrf_token=csrf,
+            title=title,
+            description='test',
+            client='Client A',
+            priority='1',
+            target_date=datetime.now().strftime('%Y-%m-%d'),
+            product_area='Billing'
+        )
+        response = self.client.post('/req', data=data, follow_redirects=True)
+        assert json.loads(response.data.decode())['success']
+        response = self.client.post('/req', data=data, follow_redirects=True)
+        assert json.loads(response.data.decode())['success']
         
     def test_log_out(self):
         response = self.client.get('/logout')

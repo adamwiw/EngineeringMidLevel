@@ -2,9 +2,16 @@
 
 {% block title %}{% if title %}{{ title }}{% else %}Welcome{% endif %}{% endblock %}
 
+{% block head %}
+    {{super()}}
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/css/bootstrap-datepicker3.min.css" />
+{% endblock %}
+
 {% block scripts %}
     {{super()}}
     <script src="//cdnjs.cloudflare.com/ajax/libs/knockout/3.4.2/knockout-min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/knockout.mapping/2.4.1/knockout.mapping.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/js/bootstrap-datepicker.min.js"></script>
     <script src="{{url_for('.static', filename='app.js')}}"></script>
 {% endblock %}
 
@@ -23,7 +30,7 @@
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 {% if not current_user.is_anonymous %}
                 <ul class="nav navbar-nav">
-                    <li><a href="{{ url_for('req') }}">Create Request</a></li>
+                    <li><a href="javascript:void(0)" data-toggle="modal" data-target="#createRequestModal">Create Request</a></li>
                 </ul>
                 {% endif %}
                 <ul class="nav navbar-nav navbar-right">
@@ -39,6 +46,9 @@
 {% endblock %}
 
 {% block content %}
+    {% if not current_user.is_anonymous %}
+    {% include 'create.html' %}
+    {% endif %}
     <div class="container">
         {% with messages = get_flashed_messages() %}
         {% if messages %}
@@ -50,3 +60,5 @@
         {% block app_content %}{% endblock %}
     </div>
 {% endblock %}
+
+
