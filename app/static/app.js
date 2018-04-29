@@ -1,9 +1,17 @@
 var formViewModel = {};
 var requestViewModel = {};
 
+var resetFormViewModel = function (whitelist) {
+    for ( var prop in formViewModel ) {
+        if ( formViewModel.hasOwnProperty( prop ) && ko.isObservable( formViewModel[ prop ] ) && whitelist.indexOf( prop ) === -1 ) {
+            formViewModel[ prop ]( undefined );
+        }
+    }
+};
+
 Date.prototype.formatYYYYMMDD = function(){
-    return (this.getFullYear()) + 
-    "-" +  this.getMonth() + 1 +
+    return this.getFullYear() + 
+    "-" +  (this.getMonth() + 1) +
     "-" +  this.getDate();
 }
 
@@ -36,6 +44,7 @@ ko.bindingHandlers.datepicker = {
             widget.date = value;
             if (widget.date) {
                 widget.setValue();
+                console.log('value: ' + value)
                 $(element).datepicker('update', value)
             }
         }
@@ -43,6 +52,8 @@ ko.bindingHandlers.datepicker = {
 };
 
 var editRequest = function(request) {
+    //formViewModel.csrf_token($('#csrf_token').val());
+    formViewModel.id(request['id']);
     formViewModel.title(request['title']);
     formViewModel.description(request['description']);
     formViewModel.client(request['client']);
@@ -79,9 +90,9 @@ $(document).ready(function(){
         requestViewModel['editRequest'] = editRequest;
         ko.applyBindings(requestViewModel, document.getElementById('requests'));
     });
-    /*$('#createRequestModal').on('hidden.bs.modal', function () {
-        $(this).find('input,textarea').not('input[type="submit"]').val('').end();
-        $(this).find('select').selectedIndex = 0;
-    });*/
+    $('#createRequestModal').on('hidden.bs.modal', function () {
+        resetFormViewModel(['csrf_token']);
+        $('#target_date').val('').end();
+    });
 });
 

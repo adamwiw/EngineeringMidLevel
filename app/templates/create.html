@@ -3,7 +3,7 @@
     <div id="createRequestModal" class="modal fade" tabindex=-1 role="dialog">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
-                <form action="{{url_for('req_post')}}" id="requestForm" name="requestForm" class="form" data-bind="submit: submitRequest" method="POST">
+                <form action="{{url_for('main.req_post')}}" id="requestForm" name="requestForm" class="form" data-bind="submit: submitRequest" method="POST">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="close">
                             <span aria-hidden="true">&times;</span>
@@ -12,13 +12,14 @@
                     </div>
                     <div class="modal-body">
                         {{ form.hidden_tag() }}
+                        {{ form.id(**{'data-bind':'value: id'}) }}
                         {{ form_field(form.title, **{'data-bind':'value: title'}) }}
                         {{ form_field(form.description, **{'data-bind':'value: description'}) }}
                         {{ form_field(form.client, **{'data-bind':'value: client'}) }}
                         {{ form_field(form.priority, **{'data-bind':'value: priority',
                             'oninput': 'setCustomValidity(\'\')'}) }}
                         {{ form_field(form.target_date, **{'data-bind':'datepicker: target_date',
-                            'data-date-format': 'yyyy-mm-dd'}) }}
+                            'data-date-format': 'yyyy-mm-dd', 'oninput': 'setCustomValidity(\'\')'}) }}
                         {{ form_field(form.product_area, **{'data-bind':'value: product_area'}) }}
                     </div>
                     <div class="modal-footer">

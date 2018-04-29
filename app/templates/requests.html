@@ -1,9 +1,10 @@
     <table id="requests" class="table table-hover">
         <thead>
-            <tr><th>Title</th><th>Description</th><th>Client</th><th>Priority</th><th>Target Date</th><th>Product Area</th></tr>
+            <tr><th>Id</th><th>Title</th><th>Description</th><th>Client</th><th>Priority</th><th>Target Date</th><th>Product Area</th></tr>
         </thead>
         <tbody data-bind="foreach: requests">
             <tr data-bind="click: editRequest">
+                <td data-bind="text: id"></td>
                 <td data-bind="text: title"></td>
                 <td data-bind="text: description"></td>
                 <td data-bind="text: client"></td>

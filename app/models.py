@@ -41,10 +41,11 @@ class Area(ViewEnum):
     REPORTS = 'Reports'
 
 class Request(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(140), index=True)
     description = db.Column(db.String(4096))
-    client = db.Column(db.Enum(Client), primary_key=True)
-    priority = db.Column(db.Integer, primary_key=True)
+    client = db.Column(db.Enum(Client), index=True)
+    priority = db.Column(db.Integer, index=True)
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     target_date = db.Column(db.Date, index=True)
     product_area = db.Column(db.Enum(Area), index=True)
