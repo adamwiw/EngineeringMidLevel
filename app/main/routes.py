@@ -62,8 +62,7 @@ def req_post():
     if form.validate_on_submit():
         request = Request.query.filter_by(id=form.id.data).first()
         if request is not None:
-            if form.client.data != request.client or 
-                form.priority.data != request.priority:
+            if form.client.data != request.client or form.priority.data != request.priority:
                 update_priority(form.client.data, form.priority.data, form.id.data)
             request.title = form.title.data
             request.description = form.description.data
