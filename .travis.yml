@@ -6,10 +6,8 @@ script:
   - python tests.py
 deploy:
   provider: heroku
-  app:
-    production: feature-request-adamwiw
+  app: feature-request-adamwiw
   api_key:
     secure: QQ++iaDSYRoxeEoIcU06slBqUo9HkkOkkW2xx7Y04b+pK+YkZsE9b4ho4nQdaSiVc4V1x/mEVgtu572Iyuh7zT1MmCOvZ4Ei6S/acEBarRLBwAHtdTulN/+GgrdgPKvTonfUsoqWHJE83plLmAypjG81x1TS3p0h9shISk6EtD1WuU+0UcanSQFWzqAeXzD4MsgTTCtrclFLC7kqA7hoQXCHenHAcGB12OoQENSlJGdrlZt/Y8/FmI9VLrTuVUvJT3W2SOuAtCqwWjMxSdX+itdNB/EKKHQU1FD3z1G9r+Uyl9rDWmLDYf67AL20V0SRt17jXBkr210zGxU96kL7t4nYzDjKUggL+CHJM0lIVxsSYKu+JntblmLdmuJFJ8vgrmrCmdpuxRyORR/1WIYz7FXpBxq7xHS+yH4RmI4XtB/lD6PDhnNpKSpNbj3LXTG0hdj7ekPYvxlPKvZGGBAODZqdihHSwtGsTxrgUR2POacrm2EIKOlWkvg2+5SbfNjw83DHzCNz3BlQ2i13D18AhU6zKxDag88WBgVPnkA7yLNyEBY3fR91ZOh33ojedwMGY9wvo2qtyoNbn6UwVyv7PyqdzfJt4be7X2NUjEcuM3ci57aes6X1lbHJRascLBqaRaBRqoCG6pp/tf9e4nDo/ZIaQ40bjuknTpemzYgzdUQ=
   on:
-    tags: true
-    all_branches: true
+    branch: master
