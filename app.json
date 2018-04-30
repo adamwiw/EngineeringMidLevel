@@ -1,0 +1,21 @@
+{
+  "name": "EngineeringMidLevel",
+  "scripts": {
+  },
+  "env": {
+    "WEB_CONCURRENCY": "1"
+  },
+  "formation": {
+    "web": {
+      "quantity": 1
+    }
+  },
+  "addons": [
+
+  ],
+  "buildpacks": [
+    {
+      "url": "heroku/python"
+    }
+  ]
+}
