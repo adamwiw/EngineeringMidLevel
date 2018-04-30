@@ -7,9 +7,13 @@ from werkzeug.urls import url_parse
 from sqlalchemy import exc
 from app.main import bp
     
-def update_priority(client, priority):
-    request = Request.query.filter((Request.client == client) & 
-        (Request.priority == priority)).first()
+def update_priority(client, priority, id = None):
+    if id is None:
+        request = Request.query.filter((Request.client == client) & 
+            (Request.priority == priority)).first()
+    else:
+        request = Request.query.filter((Request.client == client) & 
+            (Request.priority == priority) & (Request.id != id)).first()
     if request is not None:
         update_priority(request.client, request.priority + 1)
         request.priority += 1
@@ -56,9 +60,11 @@ def req_get():
 def req_post():
     form = RequestForm()
     if form.validate_on_submit():
-        update_priority(form.client.data, form.priority.data)
         request = Request.query.filter_by(id=form.id.data).first()
         if request is not None:
+            if form.client.data != request.client or 
+                form.priority.data != request.priority:
+                update_priority(form.client.data, form.priority.data, form.id.data)
             request.title = form.title.data
             request.description = form.description.data
             request.client = form.client.data
@@ -66,6 +72,7 @@ def req_post():
             request.target_date = form.target_date.data
             request.product_area = form.product_area.data
         else:
+            update_priority(form.client.data, form.priority.data)
             request = Request(title=form.title.data, description=form.description.data, 
                 client=form.client.data, priority=form.priority.data, 
                 target_date=form.target_date.data, product_area=form.product_area.data,
