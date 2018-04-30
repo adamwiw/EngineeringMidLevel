@@ -1,8 +1,9 @@
+#!/usr/bin/env python
 import unittest
 import flask_testing
 from flask import Flask, Response
 from flask_testing import TestCase, LiveServerTestCase
-from app import app, db
+from app import create_app, db
 from datetime import datetime
 import os
 from urllib.request import urlopen
@@ -15,7 +16,7 @@ import json
 
 class ServerTest(LiveServerTestCase):
     def create_app(self):
-        return app
+        return create_app()
 
     def test_server_is_up_and_running(self):
         response = urlopen(self.get_server_url())
@@ -23,7 +24,7 @@ class ServerTest(LiveServerTestCase):
         
 class BaseTest(TestCase):
     def create_app(self):
-        return app
+        return create_app()
         
     def setUp(self):
         db.init_app(self.app)

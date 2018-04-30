@@ -3,7 +3,7 @@ python: 3.5
 install:
   - pip install -r requirements.txt
 script:
-  - python app/tests/tests.py
+  - python tests.py
 deploy:
   provider: heroku
   app:
