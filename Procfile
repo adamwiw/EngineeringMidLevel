@@ -1,1 +1,1 @@
-web: python app/feature_request.py
+web: gunicorn app.feature_request:app
