@@ -1,3 +1,18 @@
+# Feature Request App
+[![Build Status](https://travis-ci.org/adamwiw/EngineeringMidLevel.png)](https://travis-ci.org/adamwiw/EngineeringMidLevel)
+
+This repository contains solution and unit tests for the engineering project outlined below.
+
+## Detailed instructions
+In order to run this app you need python 3.5 and pip.  
+It is highly adviseable that you set up your virtual environment for python.  
+More information can be found [here](https://docs.python.org/3/library/venv.html)  
+After you check out the project and you're good with your environment you can run:  
+`pip install -r requirements.txt`  
+and start your development server instance with:  
+`export FLASK_APP="app/feature_request.py"`  
+`flask run`    
+
 # Engineering Project
 This is a project that we use for testing potential team members on their technical skills.
 
